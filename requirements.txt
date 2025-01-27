@@ -1,0 +1,4 @@
+marimo
+pandas
+plotly
+pyarrow
