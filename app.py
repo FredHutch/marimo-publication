@@ -16,8 +16,8 @@ def _(mo):
         r"""
         # Publishing Interactive Visualizations
 
-        Effectively communicating complex datasets is one of the rewarding tasks in modern science, but it comes with real challenges.
-        When you have reached the limits of what can be done with a static figure embedded in a manuscript, the next option to explore may be an **interactive visualization**.
+        Effectively communicating complex datasets is one of the most rewarding tasks in modern science, but it comes with real challenges.
+        When you have reached the limits of what can be done with a static manuscript figure, the next option to explore may be an **interactive visualization**.
         These displays are generally accessed using web browsers, since browsers are already installed on almost every personal computer in the word.
         However, it is often challenging for researchers to publish to the web without either running a server or forgoing interactivity.
         A new exciting development in this field is **marimo**, a Python-based framework for deploying interactive visualizations in an entirely serverless manner.
@@ -63,7 +63,7 @@ def _(mo):
     mo.md(
         """
         The dataset that we will use here was obtained from [the Barcelona Traffic Accidents entry in Kaggle](https://www.kaggle.com/datasets/emmanuelfwerr/barcelona-car-accidents) on January 24, 2025 under the [CC0: Public Domain](https://creativecommons.org/publicdomain/zero/1.0/) licence.
-        A full description of the source and formatting modifications made to this table can be found in the README.mdREADME.md of this repository's publicpublic/ folder.
+        A full description of the source and formatting modifications made to this table can be found in the README.md of [this repository's public/ folder](https://github.com/FredHutch/marimo-publication/tree/main/public).
         """
     )
     return
@@ -100,7 +100,6 @@ def _(df, pd):
         )    
 
     binned_df = bin_df(df, 40)
-    binned_df
     return bin_df, binned_df
 
 
@@ -143,7 +142,7 @@ def _(mo):
         r"""
         Compared to a static manuscript, displaying figures in a web browser provides some immediate features that can be useful.
         A basic element of interactivity is moving your cursor over a single point a complex display, or by clicking and dragging a box to zoom into a particular region of the display. 
-        At the least, this gives the viewer a way of identifying which row in the table matches a particular point in the display.
+        For publications using **marimo**, the best options for generating interactive displays are [Plotly](https://plotly.com/python/) and [Altair](https://altair-viz.github.io/), each of which provide an amazing amount of flexibility and power.
         """
     )
     return
@@ -309,6 +308,24 @@ def _(group_by_kw, params, px, subset_summary, time_unit):
     )
     custom_fig
     return custom_fig, y_cname
+
+
+@app.cell
+def _(mo):
+    mo.md(
+        r"""
+        When the user modifies the inputs, the figure is regenerated from the input data using Python code that runs entirely in the browser.
+        The drawback of this approach is that code runs a bit slowly, so this is not the place to put long-running tasks.
+        However, the advantage is that there is no limit to the number of users who can open this publication, and there is effectively no cost to host the website.
+
+        ## Using this Approach
+
+        All of the code needed to build this text and visualization into a website can be found in an open source GitHub repository - [FredHutch/marimo-publication](https://github.com/FredHutch/marimo-publication).
+        To build something similar, just fork the repository, modify the contents to meet your needs, and then turn on GitHub pages to instantly create a website publishing your findings.
+        More details can be found in the [Readme](https://github.com/FredHutch/marimo-publication).
+        """
+    )
+    return
 
 
 @app.cell
