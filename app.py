@@ -29,11 +29,24 @@ def _(mo):
 
 
 @app.cell
-def _(mo):
+def _():
+    # If the script is running in WASM (instead of local development mode), load micropip
+    import sys
+    if "pyodide" in sys.modules:
+        import micropip
+    else:
+        micropip = None
+    return micropip, sys
+
+
+@app.cell
+async def _(micropip, mo):
     # Load the python dependencies needed to read in data and display the 
     with mo.status.spinner("Loading dependencies"):
         import pyarrow
         import pandas as pd
+        if micropip is not None:
+            await micropip.install("plotly<6.0.0")
         import plotly.express as px
     return pd, px, pyarrow
 

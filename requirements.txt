@@ -1,4 +1,4 @@
 marimo
 pandas
-plotly
+plotly<6.0.0
 pyarrow
