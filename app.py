@@ -1,7 +1,10 @@
 import marimo
 
 __generated_with = "0.10.16"
-app = marimo.App(width="medium")
+app = marimo.App(
+    width="medium",    
+    app_title="Publishing Interactive Visualizations"
+)
 
 
 @app.cell
