@@ -1,7 +1,7 @@
 # marimo-publication
 Example of publishing serverless interactive visualizations using marimo
 
-[View this publication at https://fredhutch.github.io/marimo-publication/](https://fredhutch.github.io/marimo-publication/)
+[![Example Marimo Publication](https://github.com/fredhutch/marimo-publication/raw/main/assets/screenshot.gif)](https://fredhutch.github.io/marimo-publication/)
 
 Goal:
 
