@@ -49,6 +49,7 @@ async def _(micropip, mo):
         import pyarrow
         import pandas as pd
         if micropip is not None:
+            micropip.uninstall("narwhals")
             await micropip.install("plotly<6.0.0")
         import plotly.express as px
     return pd, px, pyarrow
