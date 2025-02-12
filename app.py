@@ -50,6 +50,7 @@ async def _(micropip, mo):
         import pandas as pd
         if micropip is not None:
             micropip.uninstall("narwhals")
+            micropip.uninstall("plotly")
             await micropip.install("plotly<6.0.0")
         import plotly.express as px
     return pd, px, pyarrow
