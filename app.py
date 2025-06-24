@@ -69,10 +69,25 @@ def _(mo):
 
 
 @app.cell
-def _(mo, pd):
+def _(pd):
+    import requests
+    from io import BytesIO
+
+    def read_feather(data_path) -> pd.DataFrame:
+        try:
+            return pd.read_feather(data_path)
+        except:
+            response = requests.get(data_path)
+            return pd.read_feather(BytesIO(response.content))
+
+    return (read_feather,)
+
+
+@app.cell
+def _(mo, read_feather):
     # Read in the dataset to display
     with mo.status.spinner("Loading data"):
-        df = pd.read_feather(mo.notebook_location() / "public" / "accidents_opendata.feather")
+        df = read_feather(str(mo.notebook_location() / "public" / "accidents_opendata.feather"))
     return (df,)
 
 
