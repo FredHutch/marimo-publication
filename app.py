@@ -1,9 +1,9 @@
 import marimo
 
-__generated_with = "0.10.16"
+__generated_with = "0.14.7"
 app = marimo.App(
-    width="medium",    
-    app_title="Publishing Interactive Visualizations"
+    width="medium",
+    app_title="Publishing Interactive Visualizations",
 )
 
 
@@ -17,16 +17,16 @@ def _():
 def _(mo):
     mo.md(
         r"""
-        # Publishing Interactive Visualizations
+    # Publishing Interactive Visualizations
 
-        Effectively communicating complex datasets is one of the most rewarding tasks in modern science, but it comes with real challenges.
-        When you have reached the limits of what can be done with a static manuscript figure, the next option to explore may be an **interactive visualization**.
-        These displays are generally accessed using web browsers, since browsers are already installed on almost every personal computer in the word.
-        However, it is often challenging for researchers to publish to the web without either running a server or forgoing interactivity.
-        A new exciting development in this field is **marimo**, a Python-based framework for deploying interactive visualizations in an entirely serverless manner.
+    Effectively communicating complex datasets is one of the most rewarding tasks in modern science, but it comes with real challenges.
+    When you have reached the limits of what can be done with a static manuscript figure, the next option to explore may be an **interactive visualization**.
+    These displays are generally accessed using web browsers, since browsers are already installed on almost every personal computer in the word.
+    However, it is often challenging for researchers to publish to the web without either running a server or forgoing interactivity.
+    A new exciting development in this field is **marimo**, a Python-based framework for deploying interactive visualizations in an entirely serverless manner.
 
-        The text and figures that you see on this page were generated using **marimo**, with all of the visualizations and interactivity generated within the browser on your computer.
-        """
+    The text and figures that you see on this page were generated using **marimo**, with all of the visualizations and interactivity generated within the browser on your computer.
+    """
     )
     return
 
@@ -39,7 +39,7 @@ def _():
         import micropip
     else:
         micropip = None
-    return micropip, sys
+    return (micropip,)
 
 
 @app.cell
@@ -53,17 +53,17 @@ async def _(micropip, mo):
             micropip.uninstall("plotly")
             await micropip.install("plotly<6.0.0")
         import plotly.express as px
-    return pd, px, pyarrow
+    return pd, px
 
 
 @app.cell
 def _(mo):
     mo.md(
         """
-        ## Loading Data
+    ## Loading Data
 
-        Datasets can be read into memory from a public URL, the code repository which contains the manuscript text, or from any other source which can be loaded using a Python library.
-        """
+    Datasets can be read into memory from a public URL, the code repository which contains the manuscript text, or from any other source which can be loaded using a Python library.
+    """
     )
     return
 
@@ -80,9 +80,9 @@ def _(mo, pd):
 def _(mo):
     mo.md(
         """
-        The dataset that we will use here was obtained from [the Barcelona Traffic Accidents entry in Kaggle](https://www.kaggle.com/datasets/emmanuelfwerr/barcelona-car-accidents) on January 24, 2025 under the [CC0: Public Domain](https://creativecommons.org/publicdomain/zero/1.0/) licence.
-        A full description of the source and formatting modifications made to this table can be found in the README.md of [this repository's public/ folder](https://github.com/FredHutch/marimo-publication/tree/main/public).
-        """
+    The dataset that we will use here was obtained from [the Barcelona Traffic Accidents entry in Kaggle](https://www.kaggle.com/datasets/emmanuelfwerr/barcelona-car-accidents) on January 24, 2025 under the [CC0: Public Domain](https://creativecommons.org/publicdomain/zero/1.0/) licence.
+    A full description of the source and formatting modifications made to this table can be found in the README.md of [this repository's public/ folder](https://github.com/FredHutch/marimo-publication/tree/main/public).
+    """
     )
     return
 
@@ -118,7 +118,13 @@ def _(df, pd):
         )    
 
     binned_df = bin_df(df, 40)
-    return bin_df, binned_df
+    return (binned_df,)
+
+
+@app.cell
+def _(binned_df):
+    binned_df
+    return
 
 
 @app.cell
@@ -151,17 +157,17 @@ def _(binned_df, px):
         yaxis_showticklabels=False
     )
     fig
-    return (fig,)
+    return
 
 
 @app.cell
 def _(mo):
     mo.md(
         r"""
-        Compared to a static manuscript, displaying figures in a web browser provides some immediate features that can be useful.
-        A basic element of interactivity is moving your cursor over a single point a complex display, or by clicking and dragging a box to zoom into a particular region of the display. 
-        For publications using **marimo**, the best options for generating interactive displays are [Plotly](https://plotly.com/python/) and [Altair](https://altair-viz.github.io/), each of which provide an amazing amount of flexibility and power.
-        """
+    Compared to a static manuscript, displaying figures in a web browser provides some immediate features that can be useful.
+    A basic element of interactivity is moving your cursor over a single point a complex display, or by clicking and dragging a box to zoom into a particular region of the display. 
+    For publications using **marimo**, the best options for generating interactive displays are [Plotly](https://plotly.com/python/) and [Altair](https://altair-viz.github.io/), each of which provide an amazing amount of flexibility and power.
+    """
     )
     return
 
@@ -216,17 +222,17 @@ def _(px, summary):
         )
     )
     summary_lineplot
-    return (summary_lineplot,)
+    return
 
 
 @app.cell
 def _(mo):
     mo.md(
         r"""
-        While the summary figure above shows a number of patterns in the data (e.g. differences between districts, variability over months within a year, and a sharp dropoff in March 2020), it may be difficult for the reader to isolate those axes of variability in a focused display without loading the source data and rerunning the entire analysis process locally.
+    While the summary figure above shows a number of patterns in the data (e.g. differences between districts, variability over months within a year, and a sharp dropoff in March 2020), it may be difficult for the reader to isolate those axes of variability in a focused display without loading the source data and rerunning the entire analysis process locally.
 
-        The user input features provided by marimo are extremely open-ended, and can be used to provide the user with the ability to create precisely the plot they want.
-        """
+    The user input features provided by marimo are extremely open-ended, and can be used to provide the user with the ability to create precisely the plot they want.
+    """
     )
     return
 
@@ -325,23 +331,23 @@ def _(group_by_kw, params, px, subset_summary, time_unit):
         )
     )
     custom_fig
-    return custom_fig, y_cname
+    return
 
 
 @app.cell
 def _(mo):
     mo.md(
         r"""
-        When the user modifies the inputs, the figure is regenerated from the input data using Python code that runs entirely in the browser.
-        The drawback of this approach is that code runs a bit slowly, so this is not the place to put long-running tasks.
-        However, the advantage is that there is no limit to the number of users who can open this publication, and there is effectively no cost to host the website.
+    When the user modifies the inputs, the figure is regenerated from the input data using Python code that runs entirely in the browser.
+    The drawback of this approach is that code runs a bit slowly, so this is not the place to put long-running tasks.
+    However, the advantage is that there is no limit to the number of users who can open this publication, and there is effectively no cost to host the website.
 
-        ## Using this Approach
+    ## Using this Approach
 
-        All of the code needed to build this text and visualization into a website can be found in an open source GitHub repository - [FredHutch/marimo-publication](https://github.com/FredHutch/marimo-publication).
-        To build something similar, just fork the repository, modify the contents to meet your needs, and then turn on GitHub pages to instantly create a website publishing your findings.
-        More details can be found in the [Readme](https://github.com/FredHutch/marimo-publication).
-        """
+    All of the code needed to build this text and visualization into a website can be found in an open source GitHub repository - [FredHutch/marimo-publication](https://github.com/FredHutch/marimo-publication).
+    To build something similar, just fork the repository, modify the contents to meet your needs, and then turn on GitHub pages to instantly create a website publishing your findings.
+    More details can be found in the [Readme](https://github.com/FredHutch/marimo-publication).
+    """
     )
     return
 
