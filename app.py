@@ -53,7 +53,11 @@ async def _(micropip, mo):
             micropip.uninstall("plotly")
             await micropip.install("plotly<6.0.0")
         import plotly.express as px
-    return pd, px
+        import gzip
+        import requests
+        from io import BytesIO
+
+    return BytesIO, gzip, pd, px, requests
 
 
 @app.cell
@@ -69,17 +73,16 @@ def _(mo):
 
 
 @app.cell
-def _(pd):
-    import requests
-    from io import BytesIO
-
+def _(BytesIO, gzip, pd, requests):
     def read_feather(data_path) -> pd.DataFrame:
         try:
             return pd.read_feather(data_path)
         except:
             response = requests.get(data_path)
-            return pd.read_feather(BytesIO(response.content))
-
+            content = response.content
+            if response.headers.get("Content-Encoding") == "gzip":
+                content = gzip.decompress(content)
+            return pd.read_feather(BytesIO(content))
     return (read_feather,)
 
 
