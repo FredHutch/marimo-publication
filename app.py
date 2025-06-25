@@ -57,7 +57,7 @@ async def _(micropip, mo):
         import requests
         from io import BytesIO
 
-    return BytesIO, gzip, pd, px, requests
+    return BytesIO, pd, px, requests
 
 
 @app.cell
@@ -73,15 +73,15 @@ def _(mo):
 
 
 @app.cell
-def _(BytesIO, gzip, mo, pd, requests, micropip):
+def _(BytesIO, micropip, pd, requests):
     def read_feather(data_path) -> pd.DataFrame:
         if micropip is None:
             return pd.read_feather(data_path)
         else:
             response = requests.get(data_path)
             content = response.content
-            if response.headers.get("Content-Encoding") == "gzip":
-                content = gzip.decompress(content)
+            # if response.headers.get("Content-Encoding") == "gzip":
+            #     content = gzip.decompress(content)
             return pd.read_feather(BytesIO(content))
     return (read_feather,)
 
@@ -90,7 +90,7 @@ def _(BytesIO, gzip, mo, pd, requests, micropip):
 def _(mo, read_feather):
     # Read in the dataset to display
     with mo.status.spinner("Loading data"):
-        df = read_feather(str(mo.notebook_location() / "public" / "accidents_opendata.feather"))
+        df = read_feather("https://fredhutch.github.io/marimo-publication/public/accidents_opendata.feather")
     return (df,)
 
 
