@@ -76,10 +76,12 @@ def _(mo):
 def _(BytesIO, micropip, pd, requests):
     def read_feather(data_path) -> pd.DataFrame:
         if micropip is None:
+            print(f"Reading locally: {data_path}")
             return pd.read_feather(data_path)
         else:
             response = requests.get(data_path)
             content = response.content
+            print(f"{data_path}: {len(content):,} bytes")
             # if response.headers.get("Content-Encoding") == "gzip":
             #     content = gzip.decompress(content)
             return pd.read_feather(BytesIO(content))
