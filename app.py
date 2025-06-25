@@ -73,9 +73,9 @@ def _(mo):
 
 
 @app.cell
-def _(BytesIO, gzip, mo, pd, requests):
+def _(BytesIO, gzip, mo, pd, requests, micropip):
     def read_feather(data_path) -> pd.DataFrame:
-        if mo.running_in_notebook():
+        if micropip is not None:
             return pd.read_feather(data_path)
         else:
             response = requests.get(data_path)
