@@ -88,8 +88,8 @@ def _(BytesIO, micropip, pd, requests, gzip):
             content = response.raw.read(decode_content=True)
 
             print(f"{data_path}: {len(content):,} bytes")
-            if response.headers.get("Content-Encoding") == "gzip":
-                content = gzip.decompress(content)
+            # if response.headers.get("Content-Encoding") == "gzip":
+            #     content = gzip.decompress(content)
             return pd.read_feather(BytesIO(content))
     return (read_feather,)
 
