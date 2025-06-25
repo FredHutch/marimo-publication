@@ -73,17 +73,23 @@ def _(mo):
 
 
 @app.cell
-def _(BytesIO, micropip, pd, requests):
+def _(BytesIO, micropip, pd, requests, gzip):
     def read_feather(data_path) -> pd.DataFrame:
         if micropip is None:
             print(f"Reading locally: {data_path}")
             return pd.read_feather(data_path)
         else:
-            response = requests.get(data_path)
-            content = response.content
+            response = requests.get(data_path, stream=True)
+
+            # Raise an error if the exit code is not 400
+            response.raise_for_status()
+
+            # Read the content of the response and decode it
+            content = response.raw.read(decode_content=True)
+
             print(f"{data_path}: {len(content):,} bytes")
-            # if response.headers.get("Content-Encoding") == "gzip":
-            #     content = gzip.decompress(content)
+            if response.headers.get("Content-Encoding") == "gzip":
+                content = gzip.decompress(content)
             return pd.read_feather(BytesIO(content))
     return (read_feather,)
 
