@@ -98,7 +98,7 @@ def _(BytesIO, micropip, pd, requests, gzip):
 def _(mo, read_feather):
     # Read in the dataset to display
     with mo.status.spinner("Loading data"):
-        df = read_feather("https://fredhutch.github.io/marimo-publication/public/accidents_opendata.feather")
+        df = read_feather(str(mo.notebook_location() / "public" / "accidents_opendata.feather"))
     return (df,)
 
 
