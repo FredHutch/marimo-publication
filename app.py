@@ -73,11 +73,11 @@ def _(mo):
 
 
 @app.cell
-def _(BytesIO, gzip, pd, requests):
+def _(BytesIO, gzip, mo, pd, requests):
     def read_feather(data_path) -> pd.DataFrame:
-        try:
+        if mo.running_in_notebook():
             return pd.read_feather(data_path)
-        except:
+        else:
             response = requests.get(data_path)
             content = response.content
             if response.headers.get("Content-Encoding") == "gzip":
