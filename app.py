@@ -73,7 +73,7 @@ def _(mo):
 
 
 @app.cell
-def _(BytesIO, micropip, pd, requests, gzip):
+def _(BytesIO, micropip, pd, requests):
     def read_feather(data_path) -> pd.DataFrame:
         if micropip is None:
             print(f"Reading locally: {data_path}")
@@ -95,8 +95,16 @@ def _(BytesIO, micropip, pd, requests, gzip):
 @app.cell
 def _(mo, read_feather):
     # Read in the dataset to display
+    # Note that the try/except pattern here can be used to helpfully display error messages to the user
     with mo.status.spinner("Loading data"):
-        df = read_feather(str(mo.notebook_location() / "public" / "accidents_opendata.feather"))
+        try:
+            df = read_feather(str(mo.notebook_location() / "public" / "accidents_opendata.feather"))
+            read_df_log = ""
+        except Exception as e:
+            df = None
+            read_df_log = str(e)
+
+    mo.md(read_df_log)
     return (df,)
 
 
@@ -112,7 +120,8 @@ def _(mo):
 
 
 @app.cell
-def _(df):
+def _(df, mo):
+    mo.stop(df is None)
     df
     return
 
@@ -124,7 +133,7 @@ def _(mo):
 
 
 @app.cell
-def _(df, pd):
+def _(df, mo, pd):
     def bin_df(df: pd.DataFrame, nbins: int):
 
         return (
@@ -141,6 +150,7 @@ def _(df, pd):
             .reset_index()
         )    
 
+    mo.stop(df is None)
     binned_df = bin_df(df, 40)
     return (binned_df,)
 
